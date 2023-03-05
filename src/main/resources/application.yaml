@@ -1,0 +1,29 @@
+#opentracing:
+#  jaeger:
+#    http-sender:
+#      url: http://localhost:14268/api/traces
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            realm: DemoMicroProfile
+            client-id: DemoMicroProfile
+            authorization-grant-type: authorization_code
+            scope: openid
+            redirect-uri: http://localhost:1080/service/logged
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8080/realms/DemoMicroProfile/protocol/openid-connect/auth
+            issuer-uri: http://localhost:8080/realms/DemoMicroProfile
+            user-name-attribute: preferred_username
+            disable-state: true
+      resourceserver:
+        jwt:
+          issuer-uri:  http://localhost:8080/realms/DemoMicroProfile
